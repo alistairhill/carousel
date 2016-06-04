@@ -1,11 +1,18 @@
-.carousel {
+body {
+  font-size: 14px;
+}
+
+.carousel-container {
   margin: 20px 0px;
+}
+
+.carousel {
   height: 70vh;
   min-height: 20px;
   width: 100%;
   border: 1px solid black;
   position: relative;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .slide {
@@ -13,12 +20,12 @@
   width: 10000px;
   position: absolute;
   border-collapse: box;
+  border: 1px solid red;
 }
 
 .slot {
   height: 100%;
   float: left;
-  margin: 0 6px;
   position: relative;
 }
 
@@ -26,4 +33,12 @@
   height: 100%;
   min-height: 20px;
   width: auto;
+  padding: 0 6px;
+}
+
+.carousel-container h2, .carousel-container p {
+  text-align: center;
+  margin: 5px;
+  font-family: Avenir;
+  font-variant: small-caps;
 }

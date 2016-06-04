@@ -1,26 +1,31 @@
 window.onload = function() {
 
-  var eg1Imgs = ["eg1-1.jpg", "eg1-2.jpg", "eg1-3.jpg", "eg1-4.jpg", "eg1-5.jpg"];
-  var example1 = new alistair.Carousel("example1", eg1Imgs);
+  var example1 = new alistair.Carousel("example1");
 }
 
 var alistair = alistair || {};
 alistair.Carousel = alistair.Carousel || {};
 
-alistair.Carousel = function(label, images) {
+alistair.Carousel = function(label) {
   this.label = label;
-  this.loadImages(images);
+  this.slots = document.querySelector("."+ this.label).children;
+  this.activate();
 }
 
 alistair.Carousel.prototype = {
-  loadImages: function(images) {
-    for (var i = 0; i < images.length; i++) {
-      var slide = document.querySelector("." + this.label);
-      var div = document.createElement("DIV");
-      div.className = "slot";
-      var img = document.createElement("IMG");
-      slide.appendChild(div);
-      div.appendChild(img).src = "images/" + images[i];
+  activate: function() {
+    this.setSlideWidth()
+  },
+  getSlideWidth: function(marginSize) {
+    var slotsWidth = 0;
+    for (var i = 0; i < this.slots.length; i++) {
+      slotsWidth += (this.slots[i].offsetWidth + 1);
     }
+    return slotsWidth;
+  },
+  setSlideWidth: function() {
+    var slide = document.querySelector("."+ this.label);
+    var imagesWidth = this.getSlideWidth();
+    slide.style.width = imagesWidth + "px";
   }
 }
