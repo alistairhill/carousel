@@ -15,6 +15,7 @@ alistair.Carousel = function(name, height) {
 alistair.Carousel.prototype = {
   activate: function() {
     this.setSlideWidth();
+    this.initializeSlidePosition();
     this.loadListeners();
   },
   loadListeners: function() {
@@ -27,6 +28,12 @@ alistair.Carousel.prototype = {
   },
   setSlideWidth: function() {
     this.slide.element.style.width = this.slide.width + "px";
+  },
+  initializeSlidePosition: function() {
+    var caroMiddle = this.getCarouselWidth() / 2;
+    var slotMiddle = this.slide.slots[this.slide.currentSlot].width / 2;
+    this.slide.leftPosition = (caroMiddle - slotMiddle);
+    this.setSlidePosition(this.slide.leftPosition);
   },
   setSlidePosition: function(num) {
     this.slide.element.style.left = num + "px";
@@ -47,7 +54,7 @@ alistair.Slide.prototype = {
   makeSlots: function(name) {
     var allSlots = document.querySelector("."+ name).children;
     for (var i = 0; i < allSlots.length; i++) {
-      this.slots.push(new alistair.Slot(slots[i].offsetWidth));
+      this.slots.push(new alistair.Slot(allSlots[i].offsetWidth));
     }
     this.getSlideWidth();
   },
