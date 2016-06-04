@@ -34,6 +34,11 @@ body {
   min-height: 20px;
   width: auto;
   padding: 0 6px;
+  opacity: 0.5;
+}
+
+.slot.current img {
+  opacity: 1;
 }
 
 .carousel-container h2, .carousel-container p {
