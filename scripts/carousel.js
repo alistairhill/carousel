@@ -9,6 +9,8 @@ alistair.Carousel = function(name) {
   this.element = document.querySelector(".carousel");
   this.center = 0;
   this.slide = new alistair.Slide(name);
+  this.leftControl = document.querySelector(".carousel-left");
+  this.rightControl = document.querySelector(".carousel-right");
   this.activate();
 }
 alistair.Carousel.prototype = {
@@ -18,15 +20,24 @@ alistair.Carousel.prototype = {
     this.loadListeners();
   },
   loadListeners: function() {
-    this.element.addEventListener("click", this.nextSlot.bind(this));
+    this.leftControl.addEventListener("click", this.previousSlot.bind(this));
+    this.rightControl.addEventListener("click", this.nextSlot.bind(this));
     window.addEventListener("resize", this.resizeSlide.bind(this));
   },
   nextSlot: function() {
     if (this.slide.currentSlot < this.slide.slots.length-1) {
-      this.slide.removeCurrent();
+      this.slide.removeCurrentOpacity();
       this.slide.currentSlot++;
       this.moveSlide();
-      this.slide.addCurrent();
+      this.slide.addCurrentOpacity();
+    }
+  },
+  previousSlot: function() {
+    if (this.slide.currentSlot > 0) {
+      this.slide.removeCurrentOpacity();
+      this.slide.currentSlot--;
+      this.moveSlide();
+      this.slide.addCurrentOpacity();
     }
   },
   getCaroCenter: function() {
@@ -71,7 +82,7 @@ alistair.Slide.prototype = {
       this.slots.push(new alistair.Slot(0));
     }
     this.updateSlotWidths();
-    this.addCurrent();
+    this.addCurrentOpacity();
   },
   updateSlotWidths: function() {
     for (var i = 0; i < this.slots.length; i++) {
@@ -95,10 +106,10 @@ alistair.Slide.prototype = {
     }
     return widthTotal;
   },
-  removeCurrent() {
+  removeCurrentOpacity() {
     this.allSlots[this.currentSlot].classList.remove("current");
   },
-  addCurrent() {
+  addCurrentOpacity() {
     this.allSlots[this.currentSlot].classList.add("current");
   },
   currentSlotCenter: function() {

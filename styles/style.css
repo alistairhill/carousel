@@ -20,7 +20,8 @@ body {
   width: 0px;
   position: absolute;
   border-collapse: box;
-  border: 1px solid red;
+  /*border: 1px solid red;*/
+  z-index: 1;
 }
 
 .slot {
@@ -40,6 +41,20 @@ body {
 
 .slot.current img {
   opacity: 1;
+}
+
+.carousel-left, .carousel-right {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  right: 0;
+  z-index: 2;
+}
+.carousel-left {
+  left: 0;
+}
+.carousel-right {
+  right: 0;
 }
 
 .carousel-container h2, .carousel-container p {
