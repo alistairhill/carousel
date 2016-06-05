@@ -4,10 +4,15 @@ body {
 
 .carousel-container {
   margin: 20px 0px;
+  height: 100vh;
+  min-height: 400px;
+  border: 2px solid green;
 }
 
 .carousel {
-  height: 70vh;
+  top: 15%;
+  /*transform: translateY(-50%);*/
+  height: 70%;
   min-height: 80px;
   width: 100%;
   border: 1px solid black;
@@ -20,7 +25,11 @@ body {
   width: 0px;
   position: absolute;
   border-collapse: box;
-  /*border: 1px solid red;*/
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  transition: all 1s ease;
   z-index: 1;
 }
 
@@ -36,11 +45,16 @@ body {
   min-height: 20px;
   width: auto;
   padding: 0 6px;
-  opacity: 0.5;
+  opacity: 0.1;
 }
 
 .slot.current img {
   opacity: 1;
+  -webkit-transition: all 2s ease;
+  -moz-transition: all 2s ease;
+  -o-transition: all 2s ease;
+  -ms-transition: all 2s ease;
+  transition: all 2s ease;
 }
 
 .carousel-left, .carousel-right {
@@ -58,8 +72,11 @@ body {
 }
 
 .carousel-container h2, .carousel-container p {
+  position: relative;
+  top: 17%;
   text-align: center;
-  margin: 5px;
+  margin: 2px;
   font-family: Avenir;
+  font-size: 1.1em;
   font-variant: small-caps;
 }
