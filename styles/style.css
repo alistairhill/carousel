@@ -6,23 +6,30 @@ body {
   margin: 20px 0px;
   height: 100vh;
   min-height: 400px;
-  border: 2px solid green;
 }
 
 .carousel {
   top: 15%;
-  /*transform: translateY(-50%);*/
   height: 70%;
   min-height: 80px;
   width: 100%;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   position: relative;
   overflow: hidden;
 }
 
+.carousel ul.slide {
+  margin: 0;
+  padding: 0;
+}
+
+.carousel ul.slide > li {
+  list-style: none;
+}
+
 .slide {
   height: 100%;
-  width: 0px;
+  min-width: 100px;
   position: absolute;
   border-collapse: box;
   -webkit-transition: all 1s ease;
@@ -34,7 +41,6 @@ body {
 }
 
 .slot {
-  height: 100%;
   display: inline;
   margin: 0 -2px;
   position: relative;
