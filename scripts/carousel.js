@@ -1,16 +1,18 @@
 window.onload = function() {
   var example1 = new alistair.Carousel("example1");
+  var example2 = new alistair.Carousel("example2");
+
 }
 
 var alistair = alistair || {};
 
 alistair.Carousel = function(name) {
-  this.name = name;
+  this.name = ("."+ name);
   this.element = document.querySelector(".carousel");
   this.center = 0;
-  this.slide = new alistair.Slide(name);
-  this.leftControl = document.querySelector(".carousel-left");
-  this.rightControl = document.querySelector(".carousel-right");
+  this.slide = new alistair.Slide(this.name);
+  this.leftControl = document.querySelector(this.name + " .carousel-left");
+  this.rightControl = document.querySelector(this.name + " .carousel-right");
   this.activate();
 }
 alistair.Carousel.prototype = {
@@ -72,8 +74,8 @@ alistair.Slide = function(name) {
   this.width = 0;
   this.currentSlot = 0;
   this.leftPosition = 0;
-  this.element = document.querySelector("."+ name);
-  this.allSlots = document.querySelector("."+ name).children;
+  this.element = document.querySelector(name + " .slide");
+  this.allSlots = document.querySelector(name + " .slide").children;
   this.initializeSlots();
 }
 alistair.Slide.prototype = {
