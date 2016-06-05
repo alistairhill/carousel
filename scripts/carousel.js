@@ -4,64 +4,98 @@ window.onload = function() {
 
 var alistair = alistair || {};
 
-alistair.Carousel = function(name, height) {
+alistair.Carousel = function(name) {
   // this.title = title;
   // this.description = description;
   this.name = name;
-  this.height = height;
+  this.element = document.querySelector(".carousel");
+  this.center = 0;
   this.slide = new alistair.Slide(name);
   this.activate();
 }
 alistair.Carousel.prototype = {
   activate: function() {
     this.setSlideWidth();
-    this.initializeSlidePosition();
+    this.moveSlide();
     this.loadListeners();
   },
   loadListeners: function() {
+    this.element.addEventListener("click", this.nextSlot.bind(this));
+    window.addEventListener("resize", this.resizeSlide.bind(this));
   },
-  slideMovement: function(direction) {
+  nextSlot: function() {
+    if (this.slide.currentSlot < this.slide.slots.length-1) {
+      this.slide.currentSlot++;
+      this.moveSlide();
+    }
   },
-  getCarouselWidth: function() {
-    var caro = document.querySelector(".carousel");
-    return caro.offsetWidth;
+  getCaroCenter: function() {
+    this.center = this.element.offsetWidth / 2;
+    return this.center;
+  },
+  getCaroHeight: function(percent) {
+    return window.innerHeight / 100 * percent;
+  },
+  updateCaroHeight: function(percent) {
+    this.element.style.height = this.getCaroHeight(percent) + "px";
   },
   setSlideWidth: function() {
     this.slide.element.style.width = this.slide.width + "px";
   },
-  initializeSlidePosition: function() {
-    var caroMiddle = this.getCarouselWidth() / 2;
-    var slotMiddle = this.slide.slots[this.slide.currentSlot].width / 2;
-    this.slide.leftPosition = (caroMiddle - slotMiddle);
-    this.setSlidePosition(this.slide.leftPosition);
+  moveSlide: function() {
+    this.slide.leftPosition = (this.getCaroCenter() - this.slide.getSlidePosition());
+    this.setSlidePosition();
   },
-  setSlidePosition: function(num) {
-    this.slide.element.style.left = num + "px";
+  setSlidePosition: function() {
+    this.slide.element.style.left = this.slide.leftPosition + "px";
   },
   resizeSlide: function() {
+    this.slide.updateSlotWidths();
+    this.setSlideWidth();
+    this.moveSlide();
   }
 }
 
 alistair.Slide = function(name) {
   this.slots = [];
-  this.width = 1;
+  this.width = 0;
   this.currentSlot = 0;
   this.leftPosition = 0;
   this.element = document.querySelector("."+ name);
-  this.makeSlots(name);
+  this.allSlots = document.querySelector("."+ name).children;
+  this.initializeSlots(name);
 }
 alistair.Slide.prototype = {
-  makeSlots: function(name) {
-    var allSlots = document.querySelector("."+ name).children;
-    for (var i = 0; i < allSlots.length; i++) {
-      this.slots.push(new alistair.Slot(allSlots[i].offsetWidth));
+  initializeSlots: function(name) {
+    for (var i = 0; i < this.allSlots.length; i++) {
+      this.slots.push(new alistair.Slot(0));
+    }
+    this.updateSlotWidths(name)
+  },
+  updateSlotWidths: function(name) {
+    for (var i = 0; i < this.allSlots.length; i++) {
+      this.slots[i].width = this.allSlots[i].offsetWidth;
     }
     this.getSlideWidth();
   },
   getSlideWidth: function() {
-    for (var i = 0; i < this.slots.length; i++) {
+    this.width = 0;
+    for (var i = 0; i < this.allSlots.length; i++) {
       this.width += this.slots[i].width;
     }
+  },
+  getSlidePosition: function() {
+    return (this.getPreviousSlotWidths() + this.currentSlotCenter());
+  },
+  getPreviousSlotWidths: function() {
+    var widthTotal = 0;
+    for (var i = 0; i < this.currentSlot; i++) {
+      widthTotal += this.slots[i].width;
+    }
+    return widthTotal;
+  },
+  currentSlotCenter: function() {
+    return this.slots[this.currentSlot].width / 2;
   }
 }
 
