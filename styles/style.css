@@ -13,25 +13,21 @@ body {
   height: 70%;
   min-height: 80px;
   width: 100%;
-  /*border: 1px solid black;*/
   position: relative;
   overflow: hidden;
 }
 
-.carousel ul.slide {
+.carousel .slide {
+  border-collapse: collapse;
   margin: 0;
   padding: 0;
-}
-
-.carousel ul.slide > li {
-  list-style: none;
 }
 
 .slide {
   height: 100%;
   min-width: 100px;
   position: absolute;
-  border-collapse: box;
+  border-collapse: collapse;
   -webkit-transition: all 1s ease;
   -moz-transition: all 1s ease;
   -o-transition: all 1s ease;
@@ -49,7 +45,7 @@ body {
   height: 100%;
   min-height: 20px;
   width: auto;
-  padding: 0 6px;
+  padding: 0 2px;
   opacity: 0.1;
 }
 
@@ -66,7 +62,6 @@ body {
   position: absolute;
   width: 50%;
   height: 100%;
-  right: 0;
   z-index: 2;
 }
 .carousel-left {
@@ -74,6 +69,29 @@ body {
 }
 .carousel-right {
   right: 0;
+}
+.carousel-right::after, .carousel-left::after {
+  position: absolute;
+  top: 45%;
+  font-size: 2em;
+  color: #FAFAFA;
+  text-shadow: 1px 1px 4px #000;
+  font-family: tahoma;
+  display: inline-block;
+  transform : scale(1,2);
+  -webkit-transform:scale(1,2);
+  -moz-transform:scale(1,2);
+  -ms-transform:scale(1,2);
+  -o-transform:scale(1,2);
+  cursor: pointer;
+}
+.carousel-left::after {
+  content: "<";
+  left: 25%;
+}
+.carousel-right::after {
+  content: ">";
+  right: 25%;
 }
 
 .carousel-container h2, .carousel-container p {

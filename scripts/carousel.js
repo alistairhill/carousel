@@ -93,7 +93,7 @@ alistair.Slide.prototype = {
     this.getSlideWidth();
   },
   getSlideWidth: function() {
-    this.width = 0;
+    this.width = 1;
     for (var i = 0; i < this.allSlots.length; i++) {
       this.width += this.slots[i].width;
     }
@@ -115,7 +115,7 @@ alistair.Slide.prototype = {
     this.allSlots[this.currentSlot].classList.add("current");
   },
   currentSlotCenter: function() {
-    return this.slots[this.currentSlot].width / 2;
+    return (this.slots[this.currentSlot].width / 2);
   }
 }
 
