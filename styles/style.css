@@ -7,13 +7,12 @@ body {
 }
 
 .carousel {
-  /*height: 0px;*/
   height: 70vh;
   min-height: 80px;
   width: 100%;
   border: 1px solid black;
   position: relative;
-  /*overflow: hidden;*/
+  overflow: hidden;
 }
 
 .slide {
