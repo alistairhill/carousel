@@ -4,11 +4,13 @@ body {
 
 .carousel-container {
   margin: 20px 0px;
+  /*fall back height*/
+  height: 600px;
   height: 100vh;
   min-height: 400px;
 }
 
-.carousel {
+.carousel-container .carousel {
   top: 15%;
   height: 70%;
   min-height: 80px;
@@ -18,12 +20,8 @@ body {
 }
 
 .carousel .slide {
-  border-collapse: collapse;
   margin: 0;
   padding: 0;
-}
-
-.slide {
   height: 100%;
   min-width: 100px;
   position: absolute;
@@ -36,12 +34,13 @@ body {
   z-index: 1;
 }
 
-.slot {
+.slide .slot {
   display: inline;
   position: relative;
+  height: 100%;
 }
 
-.slot img {
+.slide .slot img {
   height: 100%;
   min-height: 20px;
   width: auto;
@@ -49,7 +48,7 @@ body {
   opacity: 0.1;
 }
 
-.slot.current img {
+.slide .slot.current img {
   opacity: 1;
   -webkit-transition: all 2s ease;
   -moz-transition: all 2s ease;
@@ -58,19 +57,21 @@ body {
   transition: all 2s ease;
 }
 
-.carousel-left, .carousel-right {
+.carousel .carousel-left,
+.carousel .carousel-right {
   position: absolute;
   width: 50%;
   height: 100%;
   z-index: 2;
 }
-.carousel-left {
+.carousel .carousel-left {
   left: 0;
 }
-.carousel-right {
+.carousel .carousel-right {
   right: 0;
 }
-.carousel-right::after, .carousel-left::after {
+.carousel .carousel-right::after,
+.carousel .carousel-left::after {
   position: absolute;
   top: 45%;
   font-size: 2em;
@@ -85,11 +86,11 @@ body {
   -o-transform:scale(1,2);
   cursor: pointer;
 }
-.carousel-left::after {
+.carousel .carousel-left::after {
   content: "<";
   left: 25%;
 }
-.carousel-right::after {
+.carousel .carousel-right::after {
   content: ">";
   right: 25%;
 }

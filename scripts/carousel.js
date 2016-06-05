@@ -1,18 +1,14 @@
 window.onload = function() {
   var example1 = new alistair.Carousel("example1");
   var example2 = new alistair.Carousel("example2");
-
 }
 
 var alistair = alistair || {};
 
 alistair.Carousel = function(name) {
   this.name = ("."+ name);
-  this.element = document.querySelector(".carousel");
   this.center = 0;
   this.slide = new alistair.Slide(this.name);
-  this.leftControl = document.querySelector(this.name + " .carousel-left");
-  this.rightControl = document.querySelector(this.name + " .carousel-right");
   this.activate();
 }
 alistair.Carousel.prototype = {
@@ -22,8 +18,13 @@ alistair.Carousel.prototype = {
     this.loadListeners();
   },
   loadListeners: function() {
-    this.leftControl.addEventListener("click", this.previousSlot.bind(this));
-    this.rightControl.addEventListener("click", this.nextSlot.bind(this));
+    // previous img button
+    var leftControl = document.querySelector(this.name + " .carousel-left");
+    leftControl.addEventListener("click", this.previousSlot.bind(this));
+    // next img button
+    var rightControl = document.querySelector(this.name + " .carousel-right");
+    rightControl.addEventListener("click", this.nextSlot.bind(this));
+    // if the window is resized, then widths and positioning are updated
     window.addEventListener("resize", this.resizeSlide.bind(this));
   },
   nextSlot: function() {
@@ -43,14 +44,9 @@ alistair.Carousel.prototype = {
     }
   },
   getCaroCenter: function() {
-    this.center = this.element.offsetWidth / 2;
+    var carouselElement = document.querySelector(".carousel");
+    this.center = carouselElement.offsetWidth / 2;
     return this.center;
-  },
-  getCaroHeight: function(percent) {
-    return window.innerHeight / 100 * percent;
-  },
-  updateCaroHeight: function(percent) {
-    this.element.style.height = this.getCaroHeight(percent) + "px";
   },
   setSlideWidth: function() {
     this.slide.element.style.width = this.slide.width + "px";
@@ -63,7 +59,7 @@ alistair.Carousel.prototype = {
     this.slide.element.style.left = this.slide.leftPosition + "px";
   },
   resizeSlide: function() {
-    this.slide.updateSlotWidths();
+    this.slide.updateAllSlotWidths();
     this.setSlideWidth();
     this.moveSlide();
   }
@@ -81,32 +77,36 @@ alistair.Slide = function(name) {
 alistair.Slide.prototype = {
   initializeSlots: function() {
     for (var i = 0; i < this.allSlots.length; i++) {
+      // add initial width of 0 to available slots
       this.slots.push(new alistair.Slot(0));
     }
-    this.updateSlotWidths();
+    this.updateAllSlotWidths();
     this.addCurrentOpacity();
   },
-  updateSlotWidths: function() {
+  updateAllSlotWidths: function() {
     for (var i = 0; i < this.slots.length; i++) {
+      // updating latest width based on the auto width of images
       this.slots[i].width = this.allSlots[i].offsetWidth;
     }
-    this.getSlideWidth();
+    this.updateSlideWidth();
   },
-  getSlideWidth: function() {
-    this.width = 1;
+  updateSlideWidth: function() {
+    this.width = 0;
     for (var i = 0; i < this.allSlots.length; i++) {
-      this.width += this.slots[i].width;
+      // gets the latest slide width, based on slot widths + padding
+      this.width += (this.slots[i].width + this.slots[i].padding);
     }
   },
   getSlidePosition: function() {
     return (this.getPreviousSlotWidths() + this.currentSlotCenter());
   },
   getPreviousSlotWidths: function() {
-    var widthTotal = 0;
+    var previousSlotWidths = 0;
     for (var i = 0; i < this.currentSlot; i++) {
-      widthTotal += this.slots[i].width;
+      // add up previous slot widths for slider positioning
+      previousSlotWidths += this.slots[i].width;
     }
-    return widthTotal;
+    return previousSlotWidths;
   },
   removeCurrentOpacity() {
     this.allSlots[this.currentSlot].classList.remove("current");
@@ -121,4 +121,5 @@ alistair.Slide.prototype = {
 
 alistair.Slot = function(width) {
   this.width = width;
+  this.padding = 4;
 }
