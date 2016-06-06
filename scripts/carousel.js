@@ -8,14 +8,18 @@ var alistair = alistair || {};
 alistair.Carousel = function(name) {
   this.name = ("."+ name);
   this.center = 0;
-  this.slide = new alistair.Slide(this.name);
   this.activate();
 }
 alistair.Carousel.prototype = {
   activate: function() {
-    this.moveSlide();
-    this.loadListeners();
-    this.updateNavVisibility();
+    if (document.querySelector(this.name)) {
+      this.slide = new alistair.Slide(this.name);
+      this.moveSlide();
+      this.loadListeners();
+      this.updateNavVisibility();
+    } else {
+      return false;
+    }
   },
   loadListeners: function() {
     // previous img button
