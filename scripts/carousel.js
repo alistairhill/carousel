@@ -13,9 +13,9 @@ alistair.Carousel = function(name) {
 }
 alistair.Carousel.prototype = {
   activate: function() {
-    this.setSlideWidth();
     this.moveSlide();
     this.loadListeners();
+    this.updateNavVisibility();
   },
   loadListeners: function() {
     // previous img button
@@ -29,18 +29,18 @@ alistair.Carousel.prototype = {
   },
   nextSlot: function() {
     if (this.slide.currentSlot < this.slide.slots.length-1) {
-      this.slide.removeCurrentOpacity();
+      this.slide.removeSlotCurrentOpacity();
       this.slide.currentSlot++;
       this.moveSlide();
-      this.slide.addCurrentOpacity();
+      this.slide.addCurrentSlotOpacity();
     }
   },
   previousSlot: function() {
     if (this.slide.currentSlot > 0) {
-      this.slide.removeCurrentOpacity();
+      this.slide.removeSlotCurrentOpacity();
       this.slide.currentSlot--;
       this.moveSlide();
-      this.slide.addCurrentOpacity();
+      this.slide.addCurrentSlotOpacity();
     }
   },
   getCaroCenter: function() {
@@ -48,24 +48,37 @@ alistair.Carousel.prototype = {
     this.center = carouselElement.offsetWidth / 2;
     return this.center;
   },
-  setSlideWidth: function() {
-    this.slide.element.style.width = this.slide.width + "px";
-  },
   moveSlide: function() {
     this.slide.leftPosition = (this.getCaroCenter() - this.slide.getSlidePosition());
-    this.setSlidePosition();
+    this.slide.setSlidePosition();
+    this.updateNavVisibility();
   },
-  setSlidePosition: function() {
-    this.slide.element.style.left = this.slide.leftPosition + "px";
+  updateNavVisibility: function() {
+    if (this.slide.currentSlot === 0) {
+      this.hideNavItem("left");
+    } else if (this.slide.currentSlot === this.slide.slots.length-1) {
+      this.hideNavItem("right");
+    } else {
+      this.displayNavItem("left");
+      this.displayNavItem("right");
+    }
+  },
+  displayNavItem: function(direction) {
+    var navItem = document.querySelector(this.name + " .carousel-" + direction);
+    navItem.style.display = "block";
+  },
+  hideNavItem: function(direction) {
+    var navItem = document.querySelector(this.name + " .carousel-" + direction);
+    navItem.style.display = "none";
   },
   resizeSlide: function() {
-    this.slide.updateAllSlotWidths();
-    this.setSlideWidth();
+    this.slide.updateSlotWidths();
     this.moveSlide();
   }
 }
 
 alistair.Slide = function(name) {
+  this.name = name;
   this.slots = [];
   this.width = 0;
   this.currentSlot = 0;
@@ -80,10 +93,10 @@ alistair.Slide.prototype = {
       // add initial width of 0 to available slots
       this.slots.push(new alistair.Slot(0));
     }
-    this.updateAllSlotWidths();
-    this.addCurrentOpacity();
+    this.updateSlotWidths();
+    this.addCurrentSlotOpacity();
   },
-  updateAllSlotWidths: function() {
+  updateSlotWidths: function() {
     for (var i = 0; i < this.slots.length; i++) {
       // updating latest width based on the auto width of images
       this.slots[i].width = this.allSlots[i].offsetWidth;
@@ -96,9 +109,16 @@ alistair.Slide.prototype = {
       // gets the latest slide width, based on slot widths + padding
       this.width += (this.slots[i].width + this.slots[i].padding);
     }
+    this.setSlideWidth();
+  },
+  setSlideWidth: function() {
+    this.element.style.width = this.width + "px";
   },
   getSlidePosition: function() {
     return (this.getPreviousSlotWidths() + this.currentSlotCenter());
+  },
+  setSlidePosition: function() {
+    this.element.style.left = this.leftPosition + "px";
   },
   getPreviousSlotWidths: function() {
     var previousSlotWidths = 0;
@@ -108,10 +128,10 @@ alistair.Slide.prototype = {
     }
     return previousSlotWidths;
   },
-  removeCurrentOpacity() {
+  removeSlotCurrentOpacity() {
     this.allSlots[this.currentSlot].classList.remove("current");
   },
-  addCurrentOpacity() {
+  addCurrentSlotOpacity() {
     this.allSlots[this.currentSlot].classList.add("current");
   },
   currentSlotCenter: function() {
