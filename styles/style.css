@@ -12,7 +12,7 @@ body {
 }
 
 .carousel-container .carousel {
-  top: 15%;
+  top: 4%;
   height: 70%;
   min-height: 80px;
   width: 100%;
@@ -99,7 +99,7 @@ body {
 
 .carousel-container h2, .carousel-container p {
   position: relative;
-  top: 17%;
+  top: 6%;
   text-align: center;
   margin: 2px;
   font-family: Avenir;
