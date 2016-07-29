@@ -33,7 +33,7 @@ alistair.Carousel.prototype = {
   },
   nextSlot: function() {
     if (this.slide.currentSlot < this.slide.slots.length-1) {
-      this.slide.removeSlotCurrentOpacity();
+      this.slide.removeCurrentSlotOpacity();
       this.slide.currentSlot++;
       this.moveSlide();
       this.slide.addCurrentSlotOpacity();
@@ -41,7 +41,7 @@ alistair.Carousel.prototype = {
   },
   previousSlot: function() {
     if (this.slide.currentSlot > 0) {
-      this.slide.removeSlotCurrentOpacity();
+      this.slide.removeCurrentSlotOpacity();
       this.slide.currentSlot--;
       this.moveSlide();
       this.slide.addCurrentSlotOpacity();
@@ -132,10 +132,10 @@ alistair.Slide.prototype = {
     }
     return previousSlotWidths;
   },
-  removeSlotCurrentOpacity() {
+  removeCurrentSlotOpacity: function() {
     this.allSlots[this.currentSlot].classList.remove("current");
   },
-  addCurrentSlotOpacity() {
+  addCurrentSlotOpacity: function() {
     this.allSlots[this.currentSlot].classList.add("current");
   },
   currentSlotCenter: function() {
