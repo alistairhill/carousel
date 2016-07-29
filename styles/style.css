@@ -64,6 +64,7 @@ body {
   width: 50%;
   height: 100%;
   z-index: 2;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 .carousel .carousel-left {
   left: 0;
